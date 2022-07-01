@@ -164,7 +164,7 @@ CREATE TABLE auditoria(
 	CONSTRAINT FK_cod_tipop_auditoria FOREIGN KEY (cod_tipop)
 		REFERENCES tipo_prestamo(cod_tipop),
     CONSTRAINT ch_tipo_op
-        CHECK (tipo_op IN ('U', 'D'))
+        CHECK (tipo_op IN ('I', 'U', 'D'))
     --, CONSTRAINT ch_tipo_transac
       --  CHECK (tipo_transac IN ('1','2'))
 );
@@ -318,6 +318,17 @@ create sequence num_p
 start with 1
 increment by 1;
 
+
+/*
+BEGIN 
+	insertar_prestamo( 1,'TP01','09/07/2021',2300.00, 2.5, 115.00, 0.00, '12/09/2021','S001',2300.00, 0.00, '03/06/2022');
+	insertar_prestamo( 2,'TP02','09/07/2021',5000.00, 1.5, 500.00, 0.00, '12/09/2021','S001',5000.00, 0.00, '03/06/2022');
+	insertar_prestamo( 3,'TP03','09/07/2021',6000.00, 2.0, 600.00, 0.00, '12/09/2021','S001',6000.00, 0.00, '03/06/2022');
+	insertar_prestamo( 4,'TP05','09/07/2021',8300.00, 3.0, 600.00, 0.00, '12/09/2021','S001',8300.00, 0.00, '03/06/2022');
+END;
+/
+*/
+
 CREATE OR REPLACE PROCEDURE insertar_prestamo(
 	p_id_cliente in prestamo.id_cliente%type,
 	p_cod_tipop in prestamo.cod_tipop%type,
@@ -354,10 +365,9 @@ BEGIN
 EXCEPTION
 	WHEN dup_val_on_index THEN
 		DBMS_OUTPUT.PUT_LINE('Valores duplicados');
-	WHEN others THEN
-		DBMS_OUTPUT.PUT_LINE('Error desconocido');
 END;
 /
+
 
 
 create sequence id_transac
@@ -557,10 +567,10 @@ END;
 
 --PRÉSTAMO
 BEGIN 
-	insertar_prestamo( 1,'TP01','09/07/2021',2300.00, 2.5, 115.00, 0.00, '12/09/2021','S001',0.00, 0.00, '03/06/2022');
-	insertar_prestamo( 2,'TP02','09/07/2021',5000.00, 1.5, 500.00, 0.00, '12/09/2021','S001',0.00, 0.00, '03/06/2022');
-	insertar_prestamo( 3,'TP03','09/07/2021',6000.00, 2.0, 600.00, 0.00, '12/09/2021','S001',0.00, 0.00, '03/06/2022');
-	insertar_prestamo( 4,'TP05','09/07/2021',8300.00, 3.0, 600.00, 0.00, '12/09/2021','S001',0.00, 0.00, '03/06/2022');
+	insertar_prestamo( 1,'TP01','09/07/2021',2300.00, 2.5, 115.00, 0.00, '12/09/2021','S001',2300.00, 0.00, '03/06/2022');
+	insertar_prestamo( 2,'TP02','09/07/2021',5000.00, 1.5, 500.00, 0.00, '12/09/2021','S001',5000.00, 0.00, '03/06/2022');
+	insertar_prestamo( 3,'TP03','09/07/2021',6000.00, 2.0, 600.00, 0.00, '12/09/2021','S001',6000.00, 0.00, '03/06/2022');
+	insertar_prestamo( 4,'TP05','09/07/2021',8300.00, 3.0, 600.00, 0.00, '12/09/2021','S001',8300.00, 0.00, '03/06/2022');
 END;
 /
 
@@ -589,4 +599,11 @@ SELECT * FROM suc_tipo_prest;
 
 SELECT * FROM sucursales;
 
+SELECT * from auditoria;
+
+--Procedimientos de actualización
+BEGIN 
+	ActualizarPagos();
+END;
+/
 */
